@@ -1,15 +1,22 @@
-import * as cdk from 'aws-cdk-lib';
-import * as TestingOnCdk from '../../lib/network/vpc-stack';
-import {Vpc} from "aws-cdk-lib/aws-ec2/lib/vpc";
+import {call, deployStack, destroyStack} from "../bash-command-runner";
 
+describe('VPCStack integration tests', function () {
+    const VPC_STACK_NAME = "Network-Stack"
+    beforeAll(() => {
+        deployStack(VPC_STACK_NAME);
+    });
 
-describe('VPCStack contract tests', function () {
-    test("VPCStack exposes VPC object", () => {
-        const app = new cdk.App();
+    test("VPCStack enables One VPC on AWS",  async () => {
 
-        const stack = new TestingOnCdk.VpcStack(app, 'test-team');
+        const response = call("aws ec2 describe-vpcs --output=json --filters Name=tag:Name,Values=TeamAlpha-network");
+        const responseAsJSON = JSON.parse(response);
+        const vpc = responseAsJSON.Vpcs[0]
+        expect(vpc.State).toEqual("available")
 
-        expect(stack.vpc).toBeInstanceOf(Vpc)
+    });
+
+    afterAll(() => {
+        return destroyStack(VPC_STACK_NAME);
     });
 
 });
