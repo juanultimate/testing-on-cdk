@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { TestingOnCdkStack } from '../lib/testing-on-cdk-stack';
+import {VpcStack} from "../lib/network/vpc-stack";
 
 const app = new cdk.App();
-new TestingOnCdkStack(app, 'TestingOnCdkStack');
+new VpcStack(app, 'TeamAlpha', {
+    tags: {
+        team: 'cdk-workshop-team',
+    }});
