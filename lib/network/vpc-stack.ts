@@ -6,13 +6,13 @@ import {IVpc} from "aws-cdk-lib/aws-ec2";
 export class VpcStack extends Stack {
 
     public vpcName: string;
-    public vpc: IVpc;
+    private readonly _vpc: IVpc;
 
     constructor(scope: Construct, teamName: string, props?: StackProps) {
         super(scope, `NetWork-Stack`, props);
 
         this.vpcName = `${teamName}-network`
-        this.vpc = new ec2.Vpc(this, this.vpcName, {
+        this._vpc = new ec2.Vpc(this, this.vpcName, {
             subnetConfiguration: [
                 {
                     name: `${teamName}-public-subnet`,
@@ -25,10 +25,14 @@ export class VpcStack extends Stack {
             maxAzs: 2
         });
 
-        this.vpc.publicSubnets.forEach(subnet => {
+        this._vpc.publicSubnets.forEach(subnet => {
             Tags.of(subnet).add("Name", `public-subnet-${subnet.availabilityZone}`,
             );
         });
-        Tags.of(this.vpc).add("Name", this.vpcName)
+        Tags.of(this._vpc).add("Name", this.vpcName)
+    }
+
+    public get vpc(){
+        return this._vpc;
     }
 }
