@@ -14,13 +14,13 @@ describe('DemoApp Contract tests', function () {
     });
 
     describe('Testing Domain-specific Language', function () {
-        test('VPC contains only one subnet', () => {
+        test('VPC contains 6 subnets', () => {
             const app = new cdk.App();
 
             const stack = new TestingOnCdk.VpcStack(app, 'test-team');
 
             const template = Template.fromStack(stack);
-            template.resourceCountIs('AWS::EC2::Subnet', 2);
+            template.resourceCountIs('AWS::EC2::Subnet', 6);
 
         });
     });

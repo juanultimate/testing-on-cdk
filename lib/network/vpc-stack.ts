@@ -9,20 +9,30 @@ export class VpcStack extends Stack {
     private readonly _vpc: IVpc;
 
     constructor(scope: Construct, teamName: string, props?: StackProps) {
-        super(scope, `NetWork-Stack`, props);
+        super(scope, `Network-Stack`, props);
 
         this.vpcName = `${teamName}-network`
         this._vpc = new ec2.Vpc(this, this.vpcName, {
+            ipAddresses: ec2.IpAddresses.cidr('10.31.0.0/16'),
+            natGateways: 1,
+            maxAzs: 3,
             subnetConfiguration: [
                 {
-                    name: `${teamName}-public-subnet`,
+                    cidrMask: 20,
+                    name: 'public',
                     subnetType: ec2.SubnetType.PUBLIC,
-                    cidrMask: 24,
                 },
-
+                {
+                    cidrMask: 20,
+                    name: 'application',
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+                },
+                {
+                    cidrMask: 20,
+                    name: 'data',
+                    subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+                },
             ],
-            natGateways: 1,
-            maxAzs: 2
         });
 
         this._vpc.publicSubnets.forEach(subnet => {

@@ -1,0 +1,20 @@
+name: Demo Pipeline for CDK Workshop
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14.x"
+      - run: npm ci
+      - run: npm run unit-test
+      - run: npm run contract-test
