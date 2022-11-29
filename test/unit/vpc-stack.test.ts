@@ -3,7 +3,7 @@ import {Template,} from 'aws-cdk-lib/assertions';
 import * as TestingOnCdk from '../../lib/network/vpc-stack';
 
 
-describe('DemoApp Contract tests', function () {
+describe('DemoApp Unit tests', function () {
     describe('VPCStack exposes vpc object', function () {
         test("VPC Name contains team name", () => {
             const app = new cdk.App();
