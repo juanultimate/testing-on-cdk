@@ -15,12 +15,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "14.x"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
       - run: npm ci
       - run: npm run unit-test
       - run: npm run contract-test
-      - run: npm run integration-test

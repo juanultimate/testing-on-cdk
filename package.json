@@ -10,6 +10,7 @@
     "unit-test": "jest --config=jest-unit.config.js",
     "contract-test": "jest --config=jest-contract.config.js",
     "integration-test": "jest --config=jest-integration.config.js",
+    "e2e-test": "jest --config=jest-e2e.config.js",
 
     "cdk": "cdk"
   },

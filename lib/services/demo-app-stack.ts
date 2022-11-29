@@ -1,8 +1,6 @@
 import {Stack, StackProps, Tags} from 'aws-cdk-lib';
 import {Construct} from 'constructs';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import {IVpc} from "aws-cdk-lib/aws-ec2";
-import * as cdk from "aws-cdk-lib";
 import {SecurityGroup} from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import {ApplicationLoadBalancedFargateService} from "aws-cdk-lib/aws-ecs-patterns";
@@ -24,7 +22,13 @@ export class DemoAppStack extends Stack {
         // Create a Fargate container image
         const image = ecs.ContainerImage.fromRegistry('amazon/amazon-ecs-sample');
 
-// Create higher level construct containing the Fargate service with a load balancer
+        const fargateServiceSecurityGroup = new SecurityGroup(
+            this,
+            "id-2",
+            {vpc: vpc}
+        );
+
+        // Create higher level construct containing the Fargate service with a load balancer
         new ApplicationLoadBalancedFargateService(
             this,
             'amazon-ecs-sample',
@@ -41,6 +45,10 @@ export class DemoAppStack extends Stack {
                     containerPort: 80,
 
                 },
+                securityGroups: [fargateServiceSecurityGroup],
+                publicLoadBalancer: true,
+                openListener: true,
+                assignPublicIp: true
             }
         );
     }

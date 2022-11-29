@@ -7,3 +7,4 @@ node_modules
 cdk.out
 
 .idea
+/cdk-outputs.json

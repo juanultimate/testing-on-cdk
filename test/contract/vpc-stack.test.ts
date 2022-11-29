@@ -7,9 +7,9 @@ describe('VPCStack contract tests', function () {
     test("VPCStack exposes VPC object", () => {
         const app = new cdk.App();
 
-        const stack = new TestingOnCdk.VpcStack(app, 'test-team');
+        const networkStack = new TestingOnCdk.VpcStack(app, 'test-team');
 
-        expect(stack.vpc).toBeInstanceOf(Vpc)
+        expect(networkStack.vpc).toBeInstanceOf(Vpc)
     });
 
 });

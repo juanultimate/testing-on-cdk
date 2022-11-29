@@ -9,12 +9,20 @@ export function call(command: string) {
 export function deployStack(stackName: string){
     console.log(`STARTING TO DEPLOY STACK: ${stackName}` )
     return call(`cdk deploy ${stackName} --require-approval never`)
-    console.log(`${stackName} DEPLOYED`)
 }
 
 export function destroyStack(stackName: string ){
     console.log(`STARTING TO DESTROY STACK: ${stackName}` )
-
     return call("cdk destroy --all --require-approval never")
-    console.log(`${stackName} DESTROYED`)
+}
+
+
+export function deployAllStacks(){
+    console.log(`STARTING TO DEPLOY ALL STACKS` )
+    return call(`cdk deploy --all --outputs-file ./cdk-outputs.json --require-approval never`)
+}
+
+export function destroyAllStack(){
+    console.log(`STARTING TO DESTROY ALL STACK` )
+    return call("cdk destroy --all --require-approval never && rm ./cdk-outputs.json");
 }
